@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object Detection</title>
+  <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: Arial, sans-serif;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('static/deep.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      animation: backgroundZoom 10s infinite alternate;
+    }
+
+    @keyframes backgroundZoom {
+      0% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(1.1);
+      }
+    }
+
+    .header-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .button-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .button {
+      padding: 8px 20px;
+      background-color: transparent;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+      outline: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin: 0 5px;
+      border: none;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .white-box {
+      margin-top: 150px;
+      width: 80%;
+      background-color: rgba(8, 8, 8, 0.5);
+      border: 2px solid #2b2b2b;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      animation: slideInUp 1s ease-in-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .title {
+      color: white;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 30px;
+      margin-top: 0;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .transparent-box {
+      width: 100%;
+      max-width: 900px; /* Set a maximum width for the transparent box */
+      background-color: rgba(95, 95, 95, 0.5);
+      padding: 20px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: slideInUp 1s ease-in-out;
+    }
+
+    .image-frame {
+      max-width: 100%;
+      max-height: 100%;
+      border: 4px solid #aaa;
+      box-sizing: border-box;
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .image-frame:hover {
+      transform: scale(1.05);
+    }
+
+    .frame-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .frame {
+      flex: 1 1 calc(50% - 20px);
+      max-width: calc(50% - 20px);
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border: 2px solid #6b6b6b;
+      border-radius: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      color: white;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .upload-button-container {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .choose-file-button {
+      padding: 12px 25px;
+      background-color: transparent;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: bold;
+      outline: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      border: 4px solid #686868;
+      margin-right: 10px;
+    }
+
+    .choose-file-button:hover {
+      background-color: rgba(66, 66, 66, 0.3);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background"></div>
+
+  <div class="header-container">
+    <div>
+      <img src="static/logo.png" alt="Logo" width="70" height="70">
+    </div>
+    <div class="button-container">
+      <a href="/" class="button">Home</a>
+      <a href="/detection_page" class="button">Detection</a>
+      <a href="/segmentation_page" class="button">Segmentation</a>
+      <a href="/about" class="button">About Us</a>
+    </div>
+  </div>
+
+  <div class="white-box">
+    <h2 class="title">Object Detection</h2>
+    <div class="transparent-box">
+      <div class="frame-container">
+        <div class="frame">
+          <div class="label">Input Image</div>
+          <img id="inputImage" class="image-frame" src="">
+        </div>
+        <div class="frame">
+          <div class="label">Output Image</div>
+          <img id="outputImage" class="image-frame" src="" >
+        </div>
+      </div>
+    </div>
+    <div class="upload-button-container">
+      <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+        <label for="uploadFile" class="choose-file-button">Choose Input Image</label>
+        <input type="file" id="uploadFile" name="uploadFile" onchange="uploadImage(event)">
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function uploadImage(event) {
+      var inputImage = document.getElementById('inputImage');
+      inputImage.src = URL.createObjectURL(event.target.files[0]);
+
+      var formData = new FormData();
+      formData.append('file', event.target.files[0]);
+
+      fetch('/predict', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          var outputImagePath = data.outputImagePath;
+          var timestamp = new Date().getTime();
+          document.getElementById('outputImage').src = '/' + outputImagePath + '?t=' + timestamp;
+        })
+        .catch(error => {
+          console.error('Error occurred:', error);
+        });
+    }
+  </script>
+
+</body>
+
+</html>

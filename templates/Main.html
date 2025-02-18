@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    <style>
+        body,
+        h1,
+        a {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background-image: url('static/deep.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .logo img {
+            width: 70px;
+            height: 70px;
+            margin-left: 20px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            margin-top: auto;
+            margin: 0 3px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar a:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            color: whitesmoke;
+            text-align: center;
+            z-index: 2;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .header-content h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            padding: 8px 20px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+            outline: none;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+            width: 150px;
+            height: 40px;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .Text-Container {
+            background-color: rgba(255, 255, 255, 0.0);
+            color: aliceblue;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 100px;
+            font-size: 66px;
+            font-weight: normal;
+            height: auto;
+            width: 50%;
+            align-self: flex-start;
+            text-align: left;
+            animation: slideInLeft 1.5s ease-in-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .Image-Container {
+            background-color: rgba(255, 255, 255, 0.0);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 150px;
+            align-self: flex-start;
+            width: 50%;
+            animation: slideInRight 1.5s ease-in-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .gif {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="static/logo.png" alt="Your Logo">
+            </div>
+            <ul>
+                <div class="button-container">
+                    <a href="/" class="button">Home</a>
+                    <a href="/detection_page" class="button">Detection</a>
+                    <a href="/segmentation_page" class="button">Segmentation</a>
+                    <a href="/about" class="button">About Us</a>
+                </div>
+            </ul>
+        </nav>
+
+        <div class="header-content">
+            <div class="Text-Container">
+                <p>Artificial Intelligence based Baggage Scanner</p>
+            </div>
+            <div class="Image-Container">
+                <div class="gif">
+                    <img src="static/vid.gif" alt="Your GIF">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
