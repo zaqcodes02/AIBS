@@ -2,14 +2,26 @@
     "version": 2,
     "builds": [
         {
-            "src": "api.py",
+            "src": "Api.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/runs/(.*)",
+            "dest": "/runs/$1"
+        },
+        {
+            "src": "/Uploads/(.*)",
+            "dest": "/Uploads/$1"
+        },
+        {
             "src": "/(.*)",
-            "dest": "api.py"
+            "dest": "Api.py"
         }
     ]
 }

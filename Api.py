@@ -30,7 +30,6 @@ def about():
     return render_template('About.html')
 
 
-
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' in request.files:
