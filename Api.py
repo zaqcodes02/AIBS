@@ -30,44 +30,6 @@ def about():
     return render_template('About.html')
 
 
-# @app.route('/predict', methods = ['GET', 'POST'])
-# def predict():
-#     if request.method == 'POST':
-#         if 'file' in request.files:
-#             img_file = request.files['file']
-#             basepath = os.path.dirname(__file__)
-#             filepath = os.path.join(basepath, 'Uploads', img_file.filename)
-#             img_file.save(filepath)
-
-#             predict = {}
-
-#             predict['imgpath'] = img_file.filename
-
-#             fileextension = img_file.filename.rsplit('.', 1)[1].lower()
-
-#             if fileextension == 'jpg' or fileextension == 'jpeg':
-#                 img = cv2.imread(filepath, cv2.COLOR_BGR2RGB)
-#                 predict = seg_model.predict(img, save = True)
-#                 return displayImage(img_file.filename)
-
-
-# @app.route('/image', methods = ['POST'])
-# def displayImage(filename):
-#     path = 'runs/segment'
-
-#     subfolder = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
-
-#     lastestpath = max(subfolder, key=lambda x: os.path.getctime(os.path.join(path, x)))
-
-#     directory = path + '/' + lastestpath
-#     files = os.listdir(directory)
-#     lastestfile = files[0]
-
-#     filename = os.path.join(path, lastestpath, lastestfile)
-#     print(directory)
-#     print(filename)
-#     return directory, filename
-
 
 @app.route('/predict', methods=['POST'])
 def predict():
